@@ -41,13 +41,13 @@
         let [expanded, setExpanded] = React.useState(false);
         let [toggled, setToggled] = React.useState(false);
 
-        const onClick = () => {
+        const onClick = React.useCallback(() => {
             if (!toggled) {
                 setToggled(true);
             }
 
             setExpanded(!expanded);
-        };
+        });
 
         return <header className="header">
             <a href="/" className="header__logo" aria-label="Яндекс.Дом"></a>
@@ -67,10 +67,9 @@
                     <a className="header__link" href="/scripts">Сценарии</a>
                 </li>
             </ul>
-        </header>;
-    }
+        </header>;    }
 
-    function Event(props) {
+    const Event = React.memo((props) => {
         const ref = React.useRef();
 
         const { onSize } = props;
@@ -92,9 +91,9 @@
                 }
             </button>
         </li>;
-    }
+    })
 
-    const TABS = {
+    const TABS = React.useMemo({
         all: {
             title: 'Все',
             items: [{
@@ -200,7 +199,7 @@
                 subtitle: 'Включено'
             }]
         }
-    };
+    })
     for (let i = 0; i < 6; ++i) {
         TABS.all.items = [...TABS.all.items, ...TABS.all.items];
     }
@@ -224,9 +223,9 @@
         };
 
         let sizes = [];
-        const onSize = size => {
+        const onSize = React.useCallback(size => {
             sizes = [...sizes, size];
-        };
+        });
 
         React.useEffect(() => {
             const sumWidth = sizes.reduce((acc, item) => acc + item.width, 0);
